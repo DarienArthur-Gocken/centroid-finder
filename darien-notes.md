@@ -8,6 +8,13 @@ Inputs the image into the DistanceImageBinarizer using toBinaryArray(gets a 2d i
 makes a BinarizingImageGroupFinder using the binarizer & a DfsBinaryGroupFinder, typed as a ImageGroupFinder.
 ImageGroupFinder gets the image, which we then loop through to output it all to a groups.csv.
 
+# Group.java
+
+Represents a group of coordinates.
+Takes size & centroid.
+centroid is average of all coords seperate for x & y.
+comparable in order of size, then centroid x, then centroid y.
+
 # EuclideanColorDistance
 
 Implements colordistancefinder.
