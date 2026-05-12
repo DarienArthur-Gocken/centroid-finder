@@ -1,3 +1,5 @@
+package io.github.darienarthurgocken.centroidfinder;
+
 import java.awt.image.BufferedImage;
 import java.util.List;
 

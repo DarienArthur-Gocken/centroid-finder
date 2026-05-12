@@ -1,3 +1,5 @@
+package io.github.darienarthurgocken.centroidfinder;
+
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.PrintWriter;
@@ -73,7 +75,7 @@ public class ImageSummaryApp {
         
         // Write the binarized image to disk as "binarized.png".
         try {
-            ImageIO.write(binaryImage, "png", new File("binarized.png"));
+            ImageIO.write(binaryImage, "png", new File("sampleOutput/binarized.png"));
             System.out.println("Binarized image saved as binarized.png");
         } catch (Exception e) {
             System.err.println("Error saving binarized image.");
@@ -89,7 +91,7 @@ public class ImageSummaryApp {
         List<Group> groups = groupFinder.findConnectedGroups(inputImage);
         
         // Write the groups information to a CSV file "groups.csv".
-        try (PrintWriter writer = new PrintWriter("groups.csv")) {
+        try (PrintWriter writer = new PrintWriter("sampleOutput/groups.csv")) {
             for (Group group : groups) {
                 writer.println(group.toCsvRow());
             }
