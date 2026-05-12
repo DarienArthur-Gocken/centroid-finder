@@ -19,6 +19,11 @@
       <version>4.13.2</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.bytedeco</groupId>
+      <artifactId>javacv-platform</artifactId>
+      <version>1.5.8</version>
+    </dependency>
   </dependencies>
 
   <build>
@@ -33,7 +38,7 @@
         <artifactId>exec-maven-plugin</artifactId>
         <version>3.1.0</version>
         <configuration>
-          <mainClass>io.github.darienarthurgocken.centroidfinder.ImageSummaryApp</mainClass>
+          <mainClass>io.github.darienarthurgocken.centroidfinder.VideoProcessor</mainClass>
         </configuration>
       </plugin>
     </plugins>
