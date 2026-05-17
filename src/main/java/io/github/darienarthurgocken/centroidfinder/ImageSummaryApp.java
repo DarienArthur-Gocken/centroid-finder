@@ -39,6 +39,7 @@ public class ImageSummaryApp {
         
         String inputImagePath = args[0];
         String hexTargetColor = args[1];
+
         int threshold = 0;
         try {
             threshold = Integer.parseInt(args[2]);
@@ -46,17 +47,16 @@ public class ImageSummaryApp {
             System.err.println("Threshold must be an integer.");
             return;
         }
-        
+
         BufferedImage inputImage = null;
         try {
-            inputImage = ImageIO.read(new File(inputImagePath));
+            inputImage = loadImage(new File(inputImagePath));
         } catch (Exception e) {
             System.err.println("Error loading image: " + inputImagePath);
             e.printStackTrace();
             return;
         }
-        
-        // Parse the target color from a hex string (format RRGGBB) into a 24-bit integer (0xRRGGBB)
+
         int targetColor = 0;
         try {
             targetColor = Integer.parseInt(hexTargetColor, 16);
@@ -64,41 +64,53 @@ public class ImageSummaryApp {
             System.err.println("Invalid hex target color. Please provide a color in RRGGBB format.");
             return;
         }
-        
-        // Create the DistanceImageBinarizer with a EuclideanColorDistance instance.
-        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
-        ImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
-        
-        // Binarize the input image.
-        int[][] binaryArray = binarizer.toBinaryArray(inputImage);
-        BufferedImage binaryImage = binarizer.toBufferedImage(binaryArray);
-        
-        // Write the binarized image to disk as "binarized.png".
+
+        BufferedImage binaryImage = createBinarizedImage(inputImage, targetColor, threshold);
         try {
-            ImageIO.write(binaryImage, "png", new File("sampleOutput/binarized.png"));
+            ImageIO.write(binaryImage, "png", new File("binarized.png"));
             System.out.println("Binarized image saved as binarized.png");
         } catch (Exception e) {
             System.err.println("Error saving binarized image.");
             e.printStackTrace();
         }
-        
-        // Create an ImageGroupFinder using a BinarizingImageGroupFinder with a DFS-based BinaryGroupFinder.
-        ImageGroupFinder groupFinder = new BinarizingImageGroupFinder(binarizer, new DfsBinaryGroupFinder());
-        
-        // Find connected groups in the input image.
-        // The BinarizingImageGroupFinder is expected to internally binarize the image,
-        // then locate connected groups of white pixels.
-        List<Group> groups = groupFinder.findConnectedGroups(inputImage);
-        
-        // Write the groups information to a CSV file "groups.csv".
-        try (PrintWriter writer = new PrintWriter("sampleOutput/groups.csv")) {
-            for (Group group : groups) {
-                writer.println(group.toCsvRow());
-            }
+
+        List<Group> groups = findGroups(inputImage, targetColor, threshold);
+        try {
+            writeGroups(groups, new File("/sampleOutput", "groups.csv"));
             System.out.println("Groups summary saved as groups.csv");
         } catch (Exception e) {
             System.err.println("Error writing groups.csv");
             e.printStackTrace();
+        }
+    }
+
+    public static BufferedImage loadImage(File imageFile) throws Exception {
+        BufferedImage inputImage = ImageIO.read(imageFile);
+        if (inputImage == null) {
+            throw new IllegalArgumentException("Error loading image:  " + imageFile.getAbsolutePath());
+        }
+        return inputImage;
+    }
+
+    public static BufferedImage createBinarizedImage(BufferedImage inputImage, int targetColor, int threshold) {
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        ImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
+        int[][] binaryArray = binarizer.toBinaryArray(inputImage);
+        return binarizer.toBufferedImage(binaryArray);
+    }
+
+    public static List<Group> findGroups(BufferedImage inputImage, int targetColor, int threshold) {
+        ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
+        ImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
+        ImageGroupFinder groupFinder = new BinarizingImageGroupFinder(binarizer, new DfsBinaryGroupFinder());
+        return groupFinder.findConnectedGroups(inputImage);
+    }
+
+    public static void writeGroups(List<Group> groups, File csvFile) throws Exception {
+        try (PrintWriter writer = new PrintWriter(csvFile)) {
+            for (Group group : groups) {
+                writer.println(group.toCsvRow());
+            }
         }
     }
 }
