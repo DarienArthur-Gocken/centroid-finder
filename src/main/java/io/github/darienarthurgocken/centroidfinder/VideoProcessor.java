@@ -60,7 +60,7 @@ public class VideoProcessor {
 
         ImageGroupFinder groupFinder = new BinarizingImageGroupFinder(
                 binarizer,
-                new DfsBinaryGroupFinder());
+                new BfsBinaryGroupFinder());
 
         try (
                 FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath);
@@ -87,13 +87,7 @@ public class VideoProcessor {
         }
     }
 
-    public static int formatTimestampSeconds(
-            FFmpegFrameGrabber grabber) {
-
-        double seconds = grabber.getTimestamp() / 1_000_000.0;
-
-        int secondsInt = (int) seconds;
-
-        return secondsInt;
+    public static int formatTimestampSeconds(FFmpegFrameGrabber grabber) {
+        return (int) (grabber.getTimestamp() / 1_000_000L);
     }
 }
