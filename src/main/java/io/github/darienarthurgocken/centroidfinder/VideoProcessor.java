@@ -6,8 +6,10 @@ import java.io.PrintWriter;
 import java.util.List;
 
 import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.FFmpegLogCallback;
 import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameUtils;
+import org.bytedeco.ffmpeg.global.avutil;
 
 public class VideoProcessor {
 
@@ -66,6 +68,9 @@ public class VideoProcessor {
                 FFmpegFrameGrabber grabber = new FFmpegFrameGrabber(videoPath);
                 PrintWriter writer = new PrintWriter(outputCsv)) {
 
+            long startTime = System.nanoTime();
+            System.out.println("Beginning to process video!");
+            FFmpegLogCallback.setLevel(avutil.AV_LOG_ERROR);
             grabber.start();
 
             Frame frame;
@@ -83,6 +88,11 @@ public class VideoProcessor {
                                     largest.centroid().y());
                 }
             }
+
+            long endTime = System.nanoTime();
+            long totalSeconds = (endTime - startTime) / 1_000_000_000L;
+
+            System.out.println("Processing took " + (totalSeconds / 60) + " minutes and " + (totalSeconds % 60) + " seconds");
             grabber.stop();
         }
     }
