@@ -26,3 +26,5 @@ replay_pid*
 target/
 sampleOutput/
 sampleInput/
+
+server/node_modules/

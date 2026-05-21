@@ -1,0 +1,14 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "Server-sided connection for Salamander Project",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Darien Arthur-Gocken & Lilian Nyugen",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
+}
