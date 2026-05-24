@@ -1,4 +1,4 @@
-import { createJob } from "../services/job.service.js";
+import { startJob } from "../services/job.service.js";
 
 export async function startProcessingJob(req, res) {
     try {
@@ -11,7 +11,7 @@ export async function startProcessingJob(req, res) {
             });
         }
 
-        const jobId = createJob({
+        const jobId = await startJob({
             filename,
             targetColor,
             threshold
