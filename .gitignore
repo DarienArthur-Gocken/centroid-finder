@@ -27,4 +27,6 @@ target/
 sampleOutput/
 sampleInput/
 
-server/node_modules/
+node_modules/
+
+.env
