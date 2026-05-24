@@ -27,6 +27,9 @@ target/
 sampleOutput/
 sampleInput/
 
+results/
+videos/
+
 node_modules/
 
 .env

@@ -1,6 +1,6 @@
 import express from "express";
 
-import { startProcessingJob, getProcessingStatus } from "../controllers/processController.js";
+import { startProcessingJob } from "../controllers/job.controller.js";
 
 const router = express.Router();
 

@@ -1,7 +1,6 @@
 import path from "path";
 import { spawn } from "child_process";
 import { v4 } from "uuid";
-import { createJob, completeJob, failJob, getJob } from "./jobService.js";
 
 const jobs = {};
 
@@ -45,14 +44,21 @@ export async function startJob({ filename, targetColor, threshold }) {
         targetColor,
         threshold
     ]);
+    javaProcess.stdout.on("data", (data) => {
+        console.log(`[JAVA OUT] ${data.toString()}`);
+    });
+
+    javaProcess.stderr.on("data", (data) => {
+        console.error(`[JAVA ERR] ${data.toString()}`);
+    });
 
     javaProcess.on("error", (err) => {
-        failJob(jobId, err.message);
+        errorJob(jobId, err.message);
     });
 
     javaProcess.on("close", (code) => {
         if (code === 0) completeJob(jobId, outputCsv);
-        else failJob(jobId, `Process exited with code ${code}`);
+        else errorJob(jobId, `Process exited with code ${code}`);
     });
 
     return jobId;
