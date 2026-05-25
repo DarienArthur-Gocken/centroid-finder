@@ -8,11 +8,12 @@
     "dev": "nodemon src/server.js",
     "test": "test"
   },
-  "author": "Darien Arthur-Gocken & Lilian Nyugen",
+  "author": "Darien Arthur-Gocken & Lilian Nguyen",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
+    "fluent-ffmpeg": "^2.1.3",
     "uuid": "^14.0.0"
   },
   "devDependencies": {
