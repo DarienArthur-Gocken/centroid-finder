@@ -38,17 +38,29 @@ export function getProcessingJobStatus(req, res) {
 
         if (!job) {
             return res.status(404).json({
-                error: "Job not found"
+                error: "Job ID not found"
             });
         }
 
-        return res.status(200).json({
-            jobId,
-            filename: job.filename,
-            status: job.status,
-            result: job.result,
-            error: job.error
-        });
+        if (job.status === "processing") {
+            return res.status(200).json({
+                status: "processing"
+            });
+        }
+
+        if (job.status === "done") {
+            return res.status(200).json({
+                status: "done",
+                result: job.result
+            });
+        }
+
+        if (job.status === "error") {
+            return res.status(200).json({
+                status: "error",
+                error: job.error
+            });
+        }
     } catch (err) {
 
         return res.status(500).json({
