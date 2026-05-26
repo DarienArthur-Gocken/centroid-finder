@@ -1,0 +1,129 @@
+type: collection.insomnia.rest/5.0
+schema_version: "5.1"
+name: Salamander Collection
+meta:
+  id: wrk_cbb607355bb74fbca616b1cd38826f1c
+  created: 1779660972489
+  modified: 1779660972489
+  description: ""
+collection:
+  - url: http://localhost:3000/process/ensantina.mp4
+    name: start job
+    meta:
+      id: req_d672d1301f344bf2a21e6e4dd9846430
+      created: 1779660983138
+      modified: 1779819005455
+      isPrivate: false
+      description: ""
+      sortKey: -1779660983138
+    method: POST
+    parameters:
+      - name: threshold
+        value: "80"
+        description: ""
+        disabled: false
+      - name: targetColor
+        value: "530209"
+        description: ""
+        disabled: false
+    headers:
+      - name: User-Agent
+        value: insomnia/12.6.0
+        description: ""
+        disabled: false
+    scripts:
+      afterResponse: |-
+        const body = JSON.parse(insomnia.response.body);
+        insomnia.environment.set("jobId", body.jobId);
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/api/videos
+    name: get all videos
+    meta:
+      id: req_d13005d177544649b5f622c7a80006bd
+      created: 1779813936075
+      modified: 1779813958706
+      isPrivate: false
+      description: ""
+      sortKey: -1779813936075
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.6.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/thumbnail/ensantina.mp4
+    name: get thumbnail
+    meta:
+      id: req_fb1bc15b6ab547e09c885dfad5c0ca9d
+      created: 1779813964194
+      modified: 1779813974749
+      isPrivate: false
+      description: ""
+      sortKey: -1779813964194
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.6.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: http://localhost:3000/process/{{ jobId }}/status
+    name: get job status
+    meta:
+      id: req_2294d6a32d634a1bbe336380dd44cee8
+      created: 1779813983444
+      modified: 1779819013289
+      isPrivate: false
+      description: ""
+      sortKey: -1779813983444
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/12.6.0
+        description: ""
+        disabled: false
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_45dd234e8b81648a9d80668457abdeb789412f39
+    created: 1779660972491
+    modified: 1779819007261
+environments:
+  name: Base Environment
+  meta:
+    id: env_45dd234e8b81648a9d80668457abdeb789412f39
+    created: 1779660972490
+    modified: 1779819007263
+    isPrivate: false
+  data:
+    jobId: 00117310-0a2f-4711-b1ee-d57ce5ce8db3
