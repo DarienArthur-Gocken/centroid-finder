@@ -1,0 +1,10 @@
+- Need to have a (-1, -1) output if a centroid isnt found.
+- Need to get rid of DFS or somehow fix it so it works. (probaly get rid of it)
+- limit how many jobs can be going at once.
+- update junit maven dependency to latest.
+- figure out how to actually test video processing better(?) only have 'golden example' rn.
+- video processor is missing javadocs.
+- should test how fast certain parts of the code are and try to optimize(?) very vague.
+- make a check for if the jar exists and crash with a error to run the command to remake the jar.
+- cache the thumbnail and reuse it instead of remaking it everytime. possibly see if it can be remade if the file changes but name remains the same too.
+- 
