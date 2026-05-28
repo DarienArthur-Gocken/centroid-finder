@@ -7,4 +7,6 @@
 - should test how fast certain parts of the code are and try to optimize(?) very vague.
 - make a check for if the jar exists and crash with a error to run the command to remake the jar.
 - cache the thumbnail and reuse it instead of remaking it everytime. possibly see if it can be remade if the file changes but name remains the same too.
-- 
+- break up the server routes/controller into a videos. & thumbnail. route/controller/service or whatever.
+- review if fluent ffmpeg & ffmpeg static are both needed.
+- see if there's a better way to grab the seconds of a javacv frame rather then as ms.
