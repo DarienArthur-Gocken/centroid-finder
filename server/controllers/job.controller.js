@@ -50,13 +50,15 @@ export function getProcessingJobStatus(req, res) {
 
         if (job.status === "processing") {
             return res.status(200).json({
-                status: "processing"
+                status: "processing",
+                progress: job.progress
             });
         }
 
         if (job.status === "done") {
             return res.status(200).json({
                 status: "done",
+                progress: 100,
                 result: job.result
             });
         }
@@ -64,6 +66,7 @@ export function getProcessingJobStatus(req, res) {
         if (job.status === "error") {
             return res.status(200).json({
                 status: "error",
+                progress: job.progress,
                 error: job.error
             });
         }

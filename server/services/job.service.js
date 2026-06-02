@@ -8,13 +8,21 @@ export function createJob(jobId, filename) {
     jobs[jobId] = {
         filename,
         status: "processing",
+        progress: 0,
         result: null,
         error: null
     };
 }
 
+export function updateJobProgress(jobId, progress) {
+    if (jobs[jobId]) {
+        jobs[jobId].progress = progress;
+    }
+}
+
 export function completeJob(jobId, resultPath) {
     jobs[jobId].status = "done";
+    jobs[jobId].progress = 100;
     jobs[jobId].result = resultPath;
 }
 
@@ -45,7 +53,14 @@ export async function startJob({ filename, targetColor, threshold }) {
         threshold
     ]);
     javaProcess.stdout.on("data", (data) => {
-        console.log(`[JAVA OUT] ${data.toString()}`);
+        const output = data.toString();
+        console.log(`[JAVA OUT] ${output}`);
+
+        const match = output.match(/PROGRESS:(\d+)/);
+
+        if (match) {
+            updateJobProgress(jobId, Number(match[1]));
+        }
     });
 
     javaProcess.stderr.on("data", (data) => {

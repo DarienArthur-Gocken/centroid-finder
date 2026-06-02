@@ -73,10 +73,17 @@ public class VideoProcessor {
             FFmpegLogCallback.setLevel(avutil.AV_LOG_ERROR);
             grabber.start();
 
+            long videoLength = grabber.getLengthInTime();
             Frame frame;
             while ((frame = grabber.grabImage()) != null) {
                 BufferedImage image = Java2DFrameUtils.toBufferedImage(frame);
                 int seconds = formatTimestampSeconds(grabber);
+
+                int progress = (int) Math.min(
+                        100,
+                        (grabber.getTimestamp() * 100) / videoLength);
+
+                System.out.println("PROGRESS:" + progress);
                 List<Group> groups = groupFinder.findConnectedGroups(image);
                 if (groups.isEmpty()) {
                     writer.println(seconds + ",-1,-1");
@@ -92,7 +99,8 @@ public class VideoProcessor {
             long endTime = System.nanoTime();
             long totalSeconds = (endTime - startTime) / 1_000_000_000L;
 
-            System.out.println("Processing took " + (totalSeconds / 60) + " minutes and " + (totalSeconds % 60) + " seconds");
+            System.out.println(
+                    "Processing took " + (totalSeconds / 60) + " minutes and " + (totalSeconds % 60) + " seconds");
             grabber.stop();
         }
     }
