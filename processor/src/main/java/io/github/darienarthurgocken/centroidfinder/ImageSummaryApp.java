@@ -102,7 +102,7 @@ public class ImageSummaryApp {
     public static List<Group> findGroups(BufferedImage inputImage, int targetColor, int threshold) {
         ColorDistanceFinder distanceFinder = new EuclideanColorDistance();
         ImageBinarizer binarizer = new DistanceImageBinarizer(distanceFinder, targetColor, threshold);
-        ImageGroupFinder groupFinder = new BinarizingImageGroupFinder(binarizer, new DfsBinaryGroupFinder());
+        ImageGroupFinder groupFinder = new BinarizingImageGroupFinder(binarizer, new BfsBinaryGroupFinder());
         return groupFinder.findConnectedGroups(inputImage);
     }
 
