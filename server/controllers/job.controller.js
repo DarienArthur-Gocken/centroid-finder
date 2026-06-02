@@ -59,7 +59,7 @@ export function getProcessingJobStatus(req, res) {
             return res.status(200).json({
                 status: "done",
                 progress: 100,
-                result: job.result
+                result: `/download/${jobId}`
             });
         }
 
@@ -95,6 +95,33 @@ export async function getAvailableVideos(req, res) {
         return res.status(500).json({
             error: "Error reading video directory"
         });
+    }
+}
+
+export async function downloadJobResult(req, res) {
+    try {
+        const { jobId } = req.params;
+        const job = getJob(jobId);
+
+        if (!job) {
+            return res.status(404).json({ error: "Job ID not found" });
+        }
+
+        if (job.status !== "done" || !job.result) {
+            return res.status(400).json({ error: "Result is not available yet" });
+        }
+
+        return res.download(job.result, `${jobId}.csv`, (err) => {
+            if (err) {
+                console.error("Download error:", err.message);
+                if (!res.headersSent) {
+                    return res.status(500).json({ error: "Error downloading result" });
+                }
+            }
+        });
+    } catch (err) {
+        console.error("Download handler error:", err.message);
+        return res.status(500).json({ error: "Error processing download request" });
     }
 }
 
