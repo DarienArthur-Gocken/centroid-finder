@@ -11,8 +11,24 @@ import org.bytedeco.javacv.Frame;
 import org.bytedeco.javacv.Java2DFrameUtils;
 import org.bytedeco.ffmpeg.global.avutil;
 
+/**
+ * Processes video files frame-by-frame to track the centroid of the largest
+ * detected group matching a target color.
+ *
+ * The output is written to a CSV file using the format:
+ * seconds,x,y
+ */
 public class VideoProcessor {
 
+    /**
+     * Runs the video processor from the command line.
+     *
+     * Expected arguments:
+     * input video path, output CSV path, target color in RRGGBB format, and
+     * threshold.
+     *
+     * @param args command line arguments used to process the video
+     */
     public static void main(String[] args) {
         if (args.length < 4) {
             System.err.println(
@@ -47,6 +63,19 @@ public class VideoProcessor {
         }
     }
 
+    /**
+     * Processes a video and writes centroid tracking results to a CSV file.
+     *
+     * Each frame is converted to a binary image based on the target color and
+     * threshold. The largest connected group is found, and its centroid is written
+     * to the CSV file. If no group is found, -1,-1 is written.
+     *
+     * @param videoPath   path to the input video file
+     * @param outputCsv   file where the CSV results will be written
+     * @param targetColor RGB color to track, written as an integer
+     * @param threshold   maximum allowed color distance from the target color
+     * @throws Exception if the video cannot be read or the CSV cannot be written
+     */
     public static void processVideo(
             String videoPath,
             File outputCsv,
@@ -105,6 +134,12 @@ public class VideoProcessor {
         }
     }
 
+    /**
+     * Converts the current FFmpeg timestamp from microseconds to whole seconds.
+     *
+     * @param grabber active FFmpeg frame grabber
+     * @return current timestamp in seconds
+     */
     public static int formatTimestampSeconds(FFmpegFrameGrabber grabber) {
         return (int) (grabber.getTimestamp() / 1_000_000L);
     }
