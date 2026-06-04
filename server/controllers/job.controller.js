@@ -1,12 +1,4 @@
 import { startJob, getJob } from "../services/job.service.js";
-import fs from "fs/promises";
-import path from "path";
-import ffmpeg from "fluent-ffmpeg";
-import ffmpegPath from "ffmpeg-static";
-import ffprobe from "ffprobe-static";
-
-ffmpeg.setFfmpegPath(ffmpegPath);
-ffmpeg.setFfprobePath(ffprobe.path);
 
 export async function startProcessingJob(req, res) {
     try {
@@ -78,26 +70,6 @@ export function getProcessingJobStatus(req, res) {
     }
 }
 
-export async function getAvailableVideos(req, res) {
-    try {
-        const videoDir = process.env.VIDEO_DIR;
-        const files = await fs.readdir(videoDir);
-
-        const videos = files.filter(file =>
-            file.endsWith(".mp4") ||
-            file.endsWith(".mov") ||
-            file.endsWith(".avi")
-        );
-
-        return res.status(200).json(videos);
-
-    } catch (err) {
-        return res.status(500).json({
-            error: "Error reading video directory"
-        });
-    }
-}
-
 export async function downloadJobResult(req, res) {
     try {
         const { jobId } = req.params;
@@ -123,28 +95,4 @@ export async function downloadJobResult(req, res) {
         console.error("Download handler error:", err.message);
         return res.status(500).json({ error: "Error processing download request" });
     }
-}
-
-export function getThumbnail(req, res) {
-    const { filename } = req.params;
-
-    const videoPath = path.join(process.env.VIDEO_DIR, filename);
-    const thumbnailPath = path.join(process.env.RESULT_DIR, `${filename}.jpg`);
-
-    ffmpeg(videoPath)
-        .screenshots({
-            count: 1,
-            filename: `${filename}.jpg`,
-            folder: process.env.RESULT_DIR
-        })
-        .on("end", () => {
-            return res.sendFile(path.resolve(thumbnailPath));
-        })
-        .on("error", (err) => {
-            console.error("Thumbnail error:", err.message);
-
-            return res.status(500).json({
-                error: "Error generating thumbnail"
-            });
-        });
 }
