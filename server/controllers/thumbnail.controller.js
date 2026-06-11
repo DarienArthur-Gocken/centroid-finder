@@ -13,11 +13,11 @@ export function getThumbnail(req, res) {
     const thumbnailPath = path.join(process.env.RESULT_DIR, `${filename}.jpg`);
 
     ffmpeg(videoPath)
-        .screenshots({
-            count: 1,
-            filename: `${filename}.jpg`,
-            folder: process.env.RESULT_DIR
-        })
+        .seekInput(1)
+        .outputOptions([
+            "-frames:v 1"
+        ])
+        .output(thumbnailPath)
         .on("end", () => {
             return res.sendFile(path.resolve(thumbnailPath));
         })
@@ -27,5 +27,6 @@ export function getThumbnail(req, res) {
             return res.status(500).json({
                 error: "Error generating thumbnail"
             });
-        });
+        })
+        .run();
 }
