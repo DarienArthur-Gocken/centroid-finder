@@ -54,6 +54,78 @@ Generates a JPEG thumbnail from the first video frame and returns it as binary i
 
 ---
 
+## Resolve the Latest CSV Result
+
+**GET** `/latest/{filename}`
+
+**Path Parameters:**
+
+- `filename` (string, required) — A video or result filename fragment to match against the generated CSVs in the results directory.
+
+**Description:**
+Returns the most recently modified matching CSV result as a plain-text download path, which the frontend can use directly.
+
+**Responses:**
+
+- **200 OK**
+
+  ```text
+  /download/123e4567-e89b-12d3-a456-426614174000
+  ```
+
+- **404 Not Found**
+
+  ```json
+  {
+    "error": "No CSV result found"
+  }
+  ```
+
+---
+
+## Retrieve Job Metadata
+
+**GET** `/metadata/{jobId}`
+
+**Path Parameters:**
+
+- `jobId` (string, required) — The job ID whose saved `.meta.json` file should be returned.
+
+**Description:**
+Returns the persisted metadata for a completed or in-progress job as JSON. This includes the original input filename, generated CSV path, timestamp, and the processing parameters used.
+
+**Responses:**
+
+- **200 OK**
+
+  ```json
+  {
+    "filename": "sample.mp4",
+    "outputCsv": "./results/123e4567-e89b-12d3-a456-426614174000.csv",
+    "createdAt": "2026-06-11T18:54:29.000Z",
+    "targetColor": "ff0000",
+    "threshold": "120"
+  }
+  ```
+
+- **404 Not Found**
+
+  ```json
+  {
+    "error": "Metadata not found"
+  }
+  ```
+
+- **500 Internal Server Error**
+
+  ```json
+  {
+    "error": "Error reading metadata"
+  }
+  ```
+
+---
+
 ## Start a Processing Job
 
 **POST** `/process/{filename}`
