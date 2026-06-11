@@ -104,7 +104,17 @@ public class VideoProcessor {
 
             long videoLength = grabber.getLengthInTime();
             Frame frame;
+
+            int frameCount = 0;
+            int frameInterval = 5;
+
             while ((frame = grabber.grabImage()) != null) {
+                frameCount++;
+
+                if (frameCount % frameInterval != 0) {
+                    continue;
+                }
+                
                 BufferedImage image = Java2DFrameUtils.toBufferedImage(frame);
                 int seconds = formatTimestampSeconds(grabber);
 
