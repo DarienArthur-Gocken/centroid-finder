@@ -12,7 +12,7 @@ public class VideoProcessorTest {
 
     @Test
     public void testProcessVideoCreatesCsvWithValidRows() throws Exception {
-        File inputVideo = new File("sampleInput/ensantina.mp4");
+        File inputVideo = new File("../sampleInput/ensantina.mp4");
         File actualCsv = File.createTempFile("actual", ".csv");
 
         assertTrue(inputVideo.exists());
