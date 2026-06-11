@@ -28,15 +28,13 @@ if (!fs.existsSync(processorJarPath)) {
 const videoDirPath = path.resolve(process.cwd(), process.env.VIDEO_DIR);
 const resultDirPath = path.resolve(process.cwd(), process.env.RESULT_DIR);
 
-const pathsToCheck = [
+for (const entry of [
     { name: 'VIDEO_DIR', path: videoDirPath },
     { name: 'RESULT_DIR', path: resultDirPath }
-];
-
-for (const entry of pathsToCheck) {
+]) {
     if (!fs.existsSync(entry.path)) {
-        console.error(`${entry.name} directory not found at path: ${entry.path}`);
-        process.exit(1);
+        fs.mkdirSync(entry.path, { recursive: true });
+        console.log(`Created ${entry.name} at ${entry.path}`);
     }
 }
 
