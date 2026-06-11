@@ -65,5 +65,5 @@ How to Use:
 ![Salamander Tracker Demo](salamander.gif)
 
 ### Links to Repository:
-Frontend: https://github.com/DarienArthur-Gocken/salamander
-Backend: https://github.com/DarienArthur-Gocken/centroid-finder
+- Frontend: https://github.com/DarienArthur-Gocken/salamander
+- Backend: https://github.com/DarienArthur-Gocken/centroid-finder
