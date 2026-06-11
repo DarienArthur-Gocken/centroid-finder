@@ -1,3 +1,5 @@
+import fs from "fs/promises";
+import fsSync from "fs";
 import path from "path";
 import { spawn } from "child_process";
 import { v4 } from "uuid";
@@ -47,17 +49,59 @@ export function createJobService({
         jobsStore[jobId].error = error;
     }
 
-    function getJob(jobId) {
-        return jobsStore[jobId];
+    function restoreJobFromDisk(jobId) {
+        const metadataPath = path.join(process.env.RESULT_DIR || '.', `${jobId}.meta.json`);
+        const resultPath = path.join(process.env.RESULT_DIR || '.', `${jobId}.csv`);
+
+        try {
+            if (!fsSync.existsSync(metadataPath)) {
+                return null;
+            }
+
+            const raw = fsSync.readFileSync(metadataPath, 'utf8');
+            const metadata = JSON.parse(raw);
+            const resultExists = fsSync.existsSync(resultPath);
+
+            jobsStore[jobId] = {
+                filename: metadata.filename || jobId,
+                status: resultExists ? 'done' : 'error',
+                progress: resultExists ? 100 : 0,
+                result: resultExists ? resultPath : null,
+                error: resultExists ? null : 'Result file not found',
+                input: metadata.input || null,
+                output: metadata.outputCsv || resultPath
+            };
+
+            return jobsStore[jobId];
+        } catch (err) {
+            return null;
+        }
     }
 
-    function startProcess({ jobId, filename, targetColor, threshold }) {
+    function getJob(jobId) {
+        if (jobsStore[jobId]) {
+            return jobsStore[jobId];
+        }
+
+        return restoreJobFromDisk(jobId);
+    }
+
+    async function startProcess({ jobId, filename, targetColor, threshold }) {
         const inputVideo = path.join(process.env.VIDEO_DIR, filename);
         const outputCsv = path.join(process.env.RESULT_DIR, `${jobId}.csv`);
+        const metadataPath = path.join(process.env.RESULT_DIR, `${jobId}.meta.json`);
 
         jobsStore[jobId].status = "processing";
         jobsStore[jobId].input = inputVideo;
         jobsStore[jobId].output = outputCsv;
+
+        await fs.writeFile(metadataPath, JSON.stringify({
+            filename,
+            outputCsv,
+            createdAt: new Date().toISOString(),
+            targetColor,
+            threshold
+        }, null, 2), "utf8");
 
         const javaProcess = spawnImpl("java", [
             "-jar",
@@ -105,7 +149,7 @@ export function createJobService({
         while (queueStore.length > 0 && activeJobs < maxConcurrentJobs) {
             const nextJob = queueStore.shift();
             activeJobs += 1;
-            startProcess(nextJob);
+            void startProcess(nextJob);
         }
     }
 
