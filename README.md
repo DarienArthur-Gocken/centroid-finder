@@ -1,25 +1,72 @@
-# centroid-finder
+# Salamander Tracker 
 
-## Maven / Video Edition.
+## Created by: 
 
-Made by Darien Arthur-Gocken & Lilian Nyugen.
+Darien Arthur-Gocken & Lilian Nguyen
 
-## dotenv format in server.
-```
-PORT=3000
+## Project Overview:
+Salamander Tracker is a full-stack web application that allows users to analyze salamander videos by selecting a target color and tolerance threshold. The application generates a binary image preview showing detected regions and exports centroid tracking data as a CSV file for further analysis. 
 
-VIDEO_DIR=./videos
-RESULT_DIR=./results
+Users can: 
+- Browse available salamander videos
+- Preview a video frame before processing
+- Select a target color using a color picker
+- Adjust the color tolerance threshold
+- View a binary image representation of the detected regions
+- Display the centroid of the largest detected region
+- Export tracking results as a CSV file
+- View the most recently genereated CSV results using the latest button
 
-PROCESSOR_JAR=../processor/target/centroid-finder-1.0-SNAPSHOT-jar-with-dependencies.jar
-```
+## Prerequisites: 
+- Java 21
+- Maven
+- Node.js
+- npm
 
-## How to Run
+## Environment Variables
+Create a `.env` file by copying the `.env.example` file & modify any values that needs to be changed.
 
-There needs to be a videos & results folder in processor.
+## Processor Setup (Java Backend)
+The processor is responsible for analyzing video frames and generating centroid tracking CSV files.
 
-To compile the processor you have to have the current directory in processor and do `mvn clean package`. This will take a couple of minutes.
+### Build the Processor
+- Navigate to the processor directory: `cd processor`
 
-When you have that, you can switch your directory to server, ensure you have everything installed via npm i
+- Build the project: `mvn clean package`
 
-Then you can run npm run dev. After that, you can run the frontend freely.
+- It will then generate the jar file
+
+### Server Setup
+- Navigate to the server directory: `cd server`
+- Install dependencies: `npm install`
+- Start the backend server: `npm run dev`
+- The back will be available at: `http://localhost:3000`
+
+## Frontend Setup
+- Install dependencies: `npm install`
+
+- Start the development server: `npm run dev`
+
+- The frontend will be available at: `http://localhost:5173`
+
+## Color Palette
+- Text #2B4064
+- Background #748496
+- Primary #77B248
+- Secondary #DEDCFF
+- Accent #B27729
+
+## Custom Feature
+### Latest Results Button
+ 
+The latest button on the videos page allow users to quickly access the most recently generated CSV file. 
+
+How to Use:
+1. Navigate to the videos page.
+2. Locate the desired video in the list.
+3. Click the latest button.
+4. The application will display the most recently generated centroid tracking results for that video. 
+
+## Demonstration 
+
+![Salamander Tracker Demo](salamander.gif)
