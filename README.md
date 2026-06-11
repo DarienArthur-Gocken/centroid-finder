@@ -1,7 +1,6 @@
 # Salamander Tracker 
 
 ## Created by: 
-
 Darien Arthur-Gocken & Lilian Nguyen
 
 ## Project Overview:
@@ -31,9 +30,7 @@ The processor is responsible for analyzing video frames and generating centroid 
 
 ### Build the Processor
 - Navigate to the processor directory: `cd processor`
-
 - Build the project: `mvn clean package`
-
 - It will then generate the jar file
 
 ### Server Setup
@@ -44,9 +41,7 @@ The processor is responsible for analyzing video frames and generating centroid 
 
 ## Frontend Setup
 - Install dependencies: `npm install`
-
 - Start the development server: `npm run dev`
-
 - The frontend will be available at: `http://localhost:5173`
 
 ## Color Palette
@@ -58,7 +53,6 @@ The processor is responsible for analyzing video frames and generating centroid 
 
 ## Custom Feature
 ### Latest Results Button
- 
 The latest button on the videos page allow users to quickly access the most recently generated CSV file. 
 
 How to Use:
@@ -68,5 +62,4 @@ How to Use:
 4. The application will display the most recently generated centroid tracking results for that video. 
 
 ## Demonstration 
-
 ![Salamander Tracker Demo](salamander.gif)
