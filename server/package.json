@@ -5,7 +5,8 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon src/server.js",
+    "dev": "nodemon --watch . --ignore results/ --ignore videos/ server.js",
+    "start": "node server.js",
     "test": "test"
   },
   "author": "Darien Arthur-Gocken & Lilian Nguyen",
