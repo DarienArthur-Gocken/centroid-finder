@@ -1,7 +1,0 @@
-- Automatic detection of what color/threshold you may want to select on a video.
-- Concurrent video processing
-- Measuring size of the salamander.
-- Using different color distance algo.
-- Video that shows the path of the centroid visually.
-- Way to only track every x amt of frames instead of every frame.
-- selection tool to grab the average color of a area & pick a color / threshold.
