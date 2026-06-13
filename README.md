@@ -16,6 +16,9 @@ Users can:
 - Export tracking results as a CSV file
 - View the most recently genereated CSV results using the latest button
 
+## Demonstration 
+![Salamander Tracker Demo](salamander.gif)
+
 ## Prerequisites: 
 - Java 21
 - Maven
@@ -60,9 +63,6 @@ How to Use:
 2. Locate the desired video in the list.
 3. Click the latest button.
 4. The application will display the most recently generated centroid tracking results for that video. 
-
-## Demonstration 
-![Salamander Tracker Demo](salamander.gif)
 
 ### Links to Repository:
 - Frontend: https://github.com/DarienArthur-Gocken/salamander
